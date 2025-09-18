@@ -221,11 +221,6 @@ async function handleRequest(request, env) {
 			},
 		});
 	}
-	if (url.pathname === "/api") {
-		// You could also call a third party API here
-		const data = await import("./data.js");
-		return Response.json(data);
-	}
 	return new Response("Hello!", {
 		headers: {
 			"content-type": "text/html",
