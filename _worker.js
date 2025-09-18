@@ -173,9 +173,13 @@ async function handleRequest(request, env) {
 			console.log(`modifiedUrl : ${modifiedUrl}`);
 
 			const sub_req = new Request(modifiedUrl);
-			const sub_resp = await fetch(sub_req);
-			const sub_text = await sub_resp.text();
+			const sub_resp_1 = await fetch(sub_req);
+			const sub_resp_2 = await fetch(sub_req);
 
+			const sub_text_1 = await sub_resp_1.text();
+			const sub_text_2 = await sub_resp_2.text();
+			const sub_text = sub_text_1.concat(sub_text_2);
+			
 			const plain_text = atob(sub_text);
 			// console.log(plain_text);
 			const decodedString = decodeURIComponent(plain_text);
@@ -228,4 +232,3 @@ async function handleRequest(request, env) {
 		},
 	});
 }
-
