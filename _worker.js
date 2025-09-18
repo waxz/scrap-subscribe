@@ -107,6 +107,7 @@ async function handleRequest(request, env) {
 		const blockParam = url.searchParams.has("block") ? url.searchParams.get("block") : fetch_sub_clean ? "香港,俄罗斯" : undefined;
 		const blockParamList = blockParam ? blockParam.split(",") : [];
 		const allowParamList = allowParam ? allowParam.split(",") : [];
+		const batch = url.searchParams.has("batch") ? Number(url.searchParams.get("batch")) : 1;
 
 
 		function proxy_filter(entry) {
@@ -173,14 +174,21 @@ async function handleRequest(request, env) {
 			console.log(`modifiedUrl : ${modifiedUrl}`);
 
 			const sub_req = new Request(modifiedUrl);
-			const sub_resp_1 = await fetch(sub_req);
-			const sub_resp_2 = await fetch(sub_req);
+			// const sub_resp_1 = await fetch(sub_req);
+			// const sub_resp_2 = await fetch(sub_req);
 
-			const sub_text_1 = await sub_resp_1.text();
-			const sub_text_2 = await sub_resp_2.text();
-			const sub_text = sub_text_1.concat(sub_text_2);
-			
-			const plain_text = atob(sub_text);
+			// const sub_text_1 = await sub_resp_1.text();
+			// const sub_text_2 = await sub_resp_2.text();
+			// const sub_text = sub_text_1.concat(sub_text_2);
+
+			let  sub_text_all = "";
+			for (var i = 0 ; i<batch;i++){
+				const sub_resp = await fetch(sub_req);
+				const text = await sub_resp.text();
+				sub_text_all = sub_text_all.concat(text);
+			}
+
+			const plain_text = atob(sub_text_all);
 			// console.log(plain_text);
 			const decodedString = decodeURIComponent(plain_text);
 			console.log(decodedString);
