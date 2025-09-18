@@ -104,7 +104,7 @@ async function handleRequest(request, env) {
 
 	if (fetch_sub) {
 		const allowParam = url.searchParams.has("allow") ? url.searchParams.get("allow") : undefined;
-		const blockParam = url.searchParams.has("block") ? url.searchParams.get("block") : fetch_sub_clean ? "香港,俄罗斯" : undefined;
+		const blockParam = url.searchParams.has("block") ? url.searchParams.get("block") : fetch_sub_clean ? "HK,RU" : undefined;
 		const blockParamList = blockParam ? blockParam.split(",") : [];
 		const allowParamList = allowParam ? allowParam.split(",") : [];
 		const batch = url.searchParams.has("batch") ? Number(url.searchParams.get("batch")) : 1;
