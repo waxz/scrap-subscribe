@@ -141,13 +141,11 @@ async function handleRequest(request, env) {
 			const text = await fetch_text("https://github.com/wzdnzd/aggregator/issues/91");
 			// console.log(`text : ${text}`);
 
-			const regex = /统一为`([^`]+)`/;
-			const match = text.match(regex);
-			let extractedToken = "";
+						
+			const match = text.match(/\|\s*token\s*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|\s*`([a-z0-9]+)`/);
 
-			if (match && match[1]) {
-				extractedToken = match[1];
-			}
+			const extractedToken = match?.[1];
+			
 			// console.log(`extractedToken : ${extractedToken}`);
 
 
