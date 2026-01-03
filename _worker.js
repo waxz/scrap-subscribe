@@ -85,6 +85,9 @@ export function errorToResponse(error) {
 	});
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function fetch_text(url) {
 	const new_req = new Request(url);
@@ -184,6 +187,7 @@ async function handleRequest(request, env) {
 				const sub_resp = await fetch(sub_req);
 				const text = await sub_resp.text();
 				sub_text_all = sub_text_all.concat(text);
+				await sleep(500);
 			}
 
 			const plain_text = atob(sub_text_all);
