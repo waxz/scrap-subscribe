@@ -195,28 +195,24 @@ async function handleRequest(request, env) {
 			const decodedString = decodeURIComponent(plain_text);
 			console.log(decodedString);
 			const proxy_lists = decodedString.split("\n");
-			const clean_proxy_list = proxy_lists.filter(function (e) { return proxy_filter(e) });
-			const encode_clean_proxy = clean_proxy_list.map(function (e) { return encodeURI(e) }).join("\n");
-			//https://stackoverflow.com/questions/332872/encode-url-in-javascript
-			// const encode_clean_proxy =  encodeURI(clean_proxy)
-			// .replace(/%3A/g, ':')  // Replaces %3A with :
-			// .replace(/%2F/g, '/')  // Replaces %2F with /
-			// .replace(/%23/g, '#') // Replaces %23 with #
-			// .replace(/%40/g, '@') // Replaces %40 with @
-			;
+			if(proxy_lists.length > 1){
+				const clean_proxy_list = proxy_lists;//.filter(function (e) { return proxy_filter(e) });
+				const encode_clean_proxy = clean_proxy_list.map(function (e) { return encodeURI(e) }).join("\n");
+				//https://stackoverflow.com/questions/332872/encode-url-in-javascript
+				// const encode_clean_proxy =  encodeURI(clean_proxy)
+				// .replace(/%3A/g, ':')  // Replaces %3A with :
+				// .replace(/%2F/g, '/')  // Replaces %2F with /
+				// .replace(/%23/g, '#') // Replaces %23 with #
+				// .replace(/%40/g, '@') // Replaces %40 with @
+				;
+				const encode_json = btoa(encode_clean_proxy);
+				response_text = decodedString;
+				response_text = encode_json;
+				await env.SUBV2KV.put("sub_data", response_text);
+			}else{
+				response_text = await env.SUBV2KV.get("sub_data");
+			}
 
-
-
-			const encode_json = btoa(encode_clean_proxy);
-
-
-
-
-
-
-			response_text = decodedString;
-			response_text = encode_json;
-			await env.SUBV2KV.put("sub_data", response_text);
 
 		} catch (error) {
 			response_text = await env.SUBV2KV.get("sub_data");
